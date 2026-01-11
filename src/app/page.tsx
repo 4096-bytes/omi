@@ -1,14 +1,24 @@
+import { headers } from "next/headers";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 import { LatestPost } from "~/app/_components/post";
-import { auth } from "~/server/auth";
+import { auth } from "~/server/better-auth";
+import { getSession } from "~/server/better-auth/server";
 import { api, HydrateClient } from "~/trpc/server";
 
-export default async function Home() {
+export default async function Home(props: {
+  searchParams?: Record<string, string | string[] | undefined>;
+}) {
   const hello = await api.post.hello({ text: "from tRPC" });
-  const session = await auth();
+  const session = await getSession();
+  const notice = props.searchParams?.notice;
+  const noticeEmail =
+    typeof props.searchParams?.email === "string"
+      ? props.searchParams.email
+      : undefined;
 
-  if (session?.user) {
+  if (session) {
     void api.post.getLatest.prefetch();
   }
 
@@ -48,16 +58,40 @@ export default async function Home() {
               {hello ? hello.greeting : "Loading tRPC query..."}
             </p>
 
+            {notice === "verify-email-sent" ? (
+              <p className="rounded-md border border-white/10 bg-white/5 px-4 py-2 text-center text-sm text-white/80">
+                Verification email sent{noticeEmail ? ` to ${noticeEmail}` : ""}
+                . Please verify your email to sign in.
+              </p>
+            ) : null}
+
             <div className="flex flex-col items-center justify-center gap-4">
               <p className="text-center text-2xl text-white">
                 {session && <span>Logged in as {session.user?.name}</span>}
               </p>
-              <Link
-                href={session ? "/api/auth/signout" : "/api/auth/signin"}
-                className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
-              >
-                {session ? "Sign out" : "Sign in"}
-              </Link>
+              {!session ? (
+                <Link
+                  className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+                  href="/login"
+                >
+                  Go to login
+                </Link>
+              ) : (
+                <form>
+                  <button
+                    className="rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20"
+                    formAction={async () => {
+                      "use server";
+                      await auth.api.signOut({
+                        headers: await headers(),
+                      });
+                      redirect("/");
+                    }}
+                  >
+                    Sign out
+                  </button>
+                </form>
+              )}
             </div>
           </div>
 

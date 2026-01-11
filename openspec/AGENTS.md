@@ -426,15 +426,11 @@ Only add complexity with:
   - MUST use Serena: `mcp__serena__activate_project` → `mcp__serena__check_onboarding_performed`
   - Prefer symbol/reference workflows: `mcp__serena__get_symbols_overview` / `mcp__serena__find_symbol` / `mcp__serena__find_referencing_symbols`
   - Prefer `mcp__serena__search_for_pattern` for text search; only fall back to `rg` when Serena is insufficient
-- When the task requires interacting with a web page (reproducing UI issues, validating flows, capturing screenshots, inspecting console/network):
-  - MUST use Chrome DevTools MCP: `mcp__chrome-devtools__new_page` / `mcp__chrome-devtools__navigate_page` → `mcp__chrome-devtools__take_snapshot` → `mcp__chrome-devtools__click` / `mcp__chrome-devtools__fill` / `mcp__chrome-devtools__press_key` / `mcp__chrome-devtools__wait_for`
-  - Use `mcp__chrome-devtools__list_console_messages` / `mcp__chrome-devtools__list_network_requests` when debugging
 
 **Trigger keywords (if present, use immediately)**
 
 - Context7: documentation, docs, API, parameters, configuration, examples, official, version, upgrade, migration, breaking change(s)
 - Serena: where is it defined, which file, who calls it, references, impact radius, refactor, change code, add tests
-- Chrome DevTools: browser, UI, click, screenshot, console, network, trace, performance
 
 **Minimal playbooks**
 
@@ -446,7 +442,6 @@ Only add complexity with:
 | --------------------- | ------------ | --------------------------- |
 | Read/understand code  | Serena MCP   | Symbol-aware, repo-grounded |
 | Check library docs    | Context7 MCP | Verifiable API reference    |
-| Interact with web UI  | Chrome DevTools MCP | Browser automation/debug    |
 | Find files by pattern | Glob         | Fast pattern matching       |
 | Search code content   | `rg`         | Optimized regex search      |
 | Read specific files   | Read         | Direct file access          |
