@@ -2,11 +2,8 @@ import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 
 import { env } from "~/env";
-import { setupFetchProxyFromEnv } from "~/server/http/fetch-proxy";
 import { db } from "~/server/db";
 import { sendVerifyEmail } from "~/server/email";
-
-setupFetchProxyFromEnv();
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

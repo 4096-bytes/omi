@@ -70,19 +70,21 @@ export function EmailSignInForm() {
         className="w-full"
         disabled={isPending}
         type="submit"
-        variant="secondary"
       >
         {isPending ? "Signing in..." : "Sign in with email"}
       </Button>
 
       {error ? (
-        <p className="text-sm text-red-200" role="alert">
+        <p className="text-sm text-destructive" role="alert">
           {error}
         </p>
       ) : (
-        <p className="text-center text-sm text-white/70">
+        <p className="text-center text-sm text-muted-foreground">
           Don’t have an account?{" "}
-          <Link className="text-white underline underline-offset-4" href="/register">
+          <Link
+            className="text-primary underline underline-offset-4 hover:text-primary/90"
+            href="/register"
+          >
             Create one
           </Link>
         </p>

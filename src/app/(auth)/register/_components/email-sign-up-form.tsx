@@ -76,7 +76,7 @@ export function EmailSignUpForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <p className="text-xs text-white/60">Minimum 8 characters.</p>
+        <p className="text-xs text-muted-foreground">Minimum 8 characters.</p>
       </div>
 
       <Button
@@ -88,7 +88,7 @@ export function EmailSignUpForm() {
       </Button>
 
       {error ? (
-        <p className="text-sm text-red-200" role="alert">
+        <p className="text-sm text-destructive" role="alert">
           {error}
         </p>
       ) : null}

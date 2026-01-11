@@ -1,69 +1,85 @@
-# OMI AI (Oh-My-Interior) — v0.0.1 (MVP)
+# OMI AI (Oh-My-Interior) — MVP
 
-OMI AI 是一个面向室内设计师的 **“对话即生产”** 工作台：通过语义化对话 + 画布坐标点引导（Point-to-Edit）来实现更可控的无蒙版编辑体验，并配套按 Token 计费的 Credits 商业底座。
+OMI AI is a **conversation-to-production** workspace for interior designers. It combines semantic chat with canvas point guidance (Point-to-Edit) to enable more controllable, mask-free edits, and provides a token-based Credits billing foundation.
 
-> 说明：当前仓库基于 T3 Stack（Next.js + tRPC）脚手架演进，已切换为 **better-auth + Drizzle**，功能会按 PRD 逐步落地。
+> Note: This repo originally evolved from a T3 Stack (Next.js + tRPC) scaffold, and now uses **better-auth + Drizzle**. Features are shipped incrementally against the PRD/specs.
 
-## 目标（MVP）
-- **交互闭环验证**：对话 + 坐标点引导，替代传统蒙版涂抹的学习成本。
-- **商业底座落地**：基于 Token 的弹性计费，公式 `Credits = (Base * (1+Y%)) + X`，并具备 Min/Max 阈值保护。
-- **效能验证**：支持 1K 预览快速迭代，并规划 4K 生产结果导出。
+## MVP Goals
 
-## 功能范围（按 PRD）
-- **账号体系**：邮箱注册/登录（better-auth），新用户初始化 50 Credits（规划）。
-- **对话式渲染**：支持 `Text + Image` 初始生图；会话维护 `thought_signature`（规划）。
-- **Point-Guided 编辑**：点击画布获取 `(x, y)`，结合指令触发局部重绘（规划）。
-- **多参考图混合**：最多 14 张参考图，支持权重/风格迁移/物件替换（规划）。
-- **Thinking Process 展示**：前端实时展示 `Thought Parts`（规划）。
-- **计费一致性**：成功回调后扣费；失败/拦截 100% 退款（设计约束）。
-- **合规**：生成图片需包含 SynthID 水印（设计约束）。
+- **Validate the interaction loop**: chat + point guidance to reduce the learning cost of traditional masking workflows.
+- **Ship the billing foundation**: token-based Credits with `Credits = (Base * (1+Y%)) + X` and Min/Max safeguards.
+- **Validate performance**: fast 1K preview iteration, with 4K export planned.
 
-## 技术栈
-- **Web**：Next.js (App Router) + React + TypeScript
-- **UI**：Tailwind CSS + Prettier（含 Tailwind class 排序插件）
-- **API**：tRPC v11 + TanStack React Query
-- **Auth**：better-auth + Drizzle Adapter
-- **DB**：PostgreSQL + Drizzle ORM（schema: `src/server/db/schema.ts`；工具: drizzle-kit）
+## Current Capabilities
 
-## 快速开始（本地开发）
-1) 准备环境变量：复制并填写 `.env`（参考 `.env.example`，并同步 `src/env.js` 的 schema）。
-   - Google OAuth（本地）：Google 控制台需配置 redirect URI 为 `http://localhost:3000/api/auth/callback/google`（并确保 origin 为 `http://localhost:3000`）。
-   - 如本地网络无法直连 Google（回调阶段报 `Connect Timeout`/`invalid_code`），可在 `.env` 设置 `HTTPS_PROXY`/`HTTP_PROXY`（例如 `http://127.0.0.1:10809`），让服务端请求走代理。
-   - 邮箱验证邮件（Resend）：需要配置 `RESEND_API_KEY`；发件人默认 `RESEND_FROM_EMAIL=onboarding@resend.dev`。
-2) 启动本地数据库（需要 Docker 或 Podman）：
+- Authentication: email/password sign-up & sign-in with mandatory email verification (Resend).
+- Social login: Google OAuth sign-in (better-auth).
+- API scaffolding: tRPC v11 + React Query integration (starter routers under `src/server/api/`).
+
+## Planned (PRD/Roadmap)
+
+- **Account system**: initialize 50 Credits for new users (planned).
+- **Conversational rendering**: support initial generation from `Text + Image`; maintain `thought_signature` per session (planned).
+- **Point-guided editing**: click canvas to get `(x, y)` and trigger localized edits via instructions (planned).
+- **Multi-reference blending**: up to 14 reference images with weights/style/object replacement (planned).
+- **Thinking process UI**: real-time `Thought Parts` rendering (planned).
+- **Billing consistency**: charge on success callback; 100% refund on failure/interception (design constraint).
+- **Compliance**: generated images SHALL include a SynthID watermark (design constraint).
+
+## Tech Stack
+
+- **Web**: Next.js (App Router) + React + TypeScript
+- **UI**: Tailwind CSS + shadcn/ui (with Prettier + Tailwind class sorting)
+- **API**: tRPC v11 + TanStack React Query
+- **Auth**: better-auth + Drizzle adapter
+- **DB**: PostgreSQL + Drizzle ORM (schema: `src/server/db/schema.ts`; tooling: drizzle-kit)
+- **Email**: Resend (transactional email)
+
+## Getting Started (Local Dev)
+
+1) Prepare environment variables: copy `.env.example` to `.env` and fill required values (keep `src/env.js` in sync).
+   - Google OAuth (local): configure redirect URI `http://localhost:3000/api/auth/callback/google` and origin `http://localhost:3000` in the Google Console.
+   - Resend (verification email): set `RESEND_API_KEY`; default sender is `RESEND_FROM_EMAIL=onboarding@resend.dev`.
+2) Start the local database (requires Docker or Podman):
    - `./start-database.sh`
-3) 安装依赖并初始化数据库（Drizzle）：
+3) Install dependencies and initialize DB schema (Drizzle):
    - `npm install`
-   - `npm run db:push`（或按需要使用 `npm run db:generate` / `npm run db:migrate`）
-4) 启动开发服务：
+   - `npm run db:push` (or use `npm run db:generate` / `npm run db:migrate` when needed)
+4) Start the dev server:
    - `npm run dev`
 
-### 本地验证（Auth 最小冒烟）
-- 访问 `http://localhost:3000/register` 完成邮箱注册；收到验证邮件后点击链接完成验证（未验证不允许登录）。
-- 访问 `http://localhost:3000/login` 使用邮箱 + 密码登录；成功后默认跳转到 `/`。
+### Local Smoke Test (Auth)
 
-## 常用命令
-- `npm run check`：`next lint` + `tsc --noEmit`
-- `npm run lint` / `npm run lint:fix`：代码检查 / 自动修复
-- `npm run format:check` / `npm run format:write`：格式校验 / 格式化
-- `npm run db:studio`：打开 Drizzle Studio
-- `npm run build` / `npm run start` / `npm run preview`：构建与本地运行
+- Visit `http://localhost:3000/register` to sign up; open the verification email and complete verification (unverified users cannot sign in).
+- Visit `http://localhost:3000/login` to sign in with email + password; on success you should be redirected to `/`.
 
-## 目录结构（核心）
-- `src/app/`：页面与路由（含 `src/app/api/`）
-- `src/app/_components/`：UI 组件
-- `src/server/`：服务端代码（better-auth、Drizzle、tRPC routers）
-- `src/trpc/`：tRPC/React Query 客户端与服务端工具
-- `src/server/db/schema.ts`：Drizzle 数据模型
-- `drizzle.config.ts`：drizzle-kit 配置
+## Common Commands
 
-## Credits 计费模型（设计说明 / WIP）
-- 计费公式：`Credits = (Base_Token_Cost * (1 + Y%)) + X`；1K 图片基数按 `1290 tokens/张` 计算（PRD 假设）。
-- 状态机：`PENDING` 预扣 → 任务成功按实际 `totalTokens` 结算（`SUCCESS`）→ 失败/超时/安全拦截全额返还（`FAIL`）。
-- 流水账单：按任务维度记录时间、任务 ID、消耗明细（规划）。
+- `npm run check`: `next lint` + `tsc --noEmit`
+- `npm run lint` / `npm run lint:fix`: lint / auto-fix
+- `npm run format:check` / `npm run format:write`: formatting check / write
+- `npm run db:studio`: Drizzle Studio
+- `npm run build` / `npm run start` / `npm run preview`: build & run locally
 
-## 贡献与 PR 约定
-请先阅读 `AGENTS.md`（仓库贡献者指南）。建议遵循：
-- Conventional Commits（如 `feat: ...` / `fix(auth): ...`）
-- PR 描述包含：变更动机、影响范围、UI 截图（如适用）、迁移说明（如涉及数据库迁移）
-- 严禁提交 `.env` 与任何密钥；新增环境变量需更新 `.env.example` 与 `src/env.js`
+## Project Structure (Core)
+
+- `src/app/`: routes and pages (including `src/app/api/`)
+- `src/app/_components/`: UI components (including shadcn/ui primitives)
+- `src/server/`: server-only code (better-auth, Drizzle, tRPC routers)
+- `src/trpc/`: tRPC/React Query client/server helpers
+- `openspec/`: specs and change proposals (spec-driven development)
+
+## Credits Billing Model (Design Notes / WIP)
+
+- Formula: `Credits = (Base_Token_Cost * (1 + Y%)) + X`; 1K image base assumes `1290 tokens/image` (PRD assumption).
+- State machine: `PENDING` reserve → settle on success using `totalTokens` (`SUCCESS`) → full refund on failure/timeout/safety interception (`FAIL`).
+- Ledger: task-level records for timestamps, task IDs, and cost breakdowns (planned).
+
+## Contributing / PR Guidelines
+
+Read `AGENTS.md` first (contributor guidelines). Recommended conventions:
+
+- Conventional Commits (e.g. `feat: ...` / `fix(auth): ...`)
+- PR description includes: motivation, impact scope, UI screenshots (if applicable), migration notes (if DB changes are involved)
+- Never commit `.env` or secrets; when adding env vars, update `.env.example` and `src/env.js`
+- UI is dark-only (Studio Dark). Brand tokens live in `src/styles/globals.css` and any new/changed pages should keep the single gold accent discipline.

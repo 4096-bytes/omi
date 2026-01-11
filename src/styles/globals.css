@@ -3,4 +3,36 @@
 @theme {
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-background: #0b0b0c;
+  --color-foreground: #fafafa;
+
+  --color-card: #111113;
+  --color-card-foreground: #fafafa;
+
+  --color-popover: #161618;
+  --color-popover-foreground: #fafafa;
+
+  --color-primary: #d4af37;
+  --color-primary-foreground: #0b0b0c;
+
+  --color-secondary: #161618;
+  --color-secondary-foreground: #fafafa;
+
+  --color-muted: #111113;
+  --color-muted-foreground: #a1a1aa;
+
+  --color-accent: #161618;
+  --color-accent-foreground: #fafafa;
+
+  --color-destructive: #ef4444;
+  --color-destructive-foreground: #fafafa;
+
+  --color-border: #27272a;
+  --color-input: #27272a;
+  --color-ring: #d4af37;
+}
+
+:root {
+  color-scheme: dark;
 }

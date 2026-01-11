@@ -2,7 +2,7 @@ import { type ButtonHTMLAttributes } from "react";
 
 import { cn, type ClassValue } from "./cn";
 
-type ButtonVariant = "default" | "secondary" | "ghost";
+type ButtonVariant = "default" | "secondary" | "outline" | "ghost";
 type ButtonSize = "default" | "sm" | "lg";
 
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -11,12 +11,13 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 const base: ClassValue =
-  "inline-flex items-center justify-center rounded-md text-sm font-semibold shadow-sm transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white disabled:cursor-not-allowed disabled:opacity-70";
+  "inline-flex items-center justify-center rounded-md text-sm font-semibold shadow-sm transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-70";
 
 const variants: Record<ButtonVariant, ClassValue> = {
-  default: "bg-white text-slate-900 hover:bg-white/90",
-  secondary: "bg-white/10 text-white hover:bg-white/15",
-  ghost: "bg-transparent text-white hover:bg-white/10",
+  default: "bg-primary text-primary-foreground hover:bg-primary/90",
+  secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+  outline: "border border-border bg-transparent text-foreground hover:bg-accent",
+  ghost: "bg-transparent text-foreground hover:bg-accent",
 };
 
 const sizes: Record<ButtonSize, ClassValue> = {
@@ -40,4 +41,3 @@ export function Button({
     />
   );
 }
-

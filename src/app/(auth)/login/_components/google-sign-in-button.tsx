@@ -42,6 +42,7 @@ export function GoogleSignInButton() {
       <Button
         className="w-full gap-3"
         disabled={isPending}
+        variant="outline"
         onClick={async () => {
           setIsPending(true);
           setError(null);
@@ -67,7 +68,7 @@ export function GoogleSignInButton() {
       </Button>
 
       {error ? (
-        <p className="text-sm text-red-200" role="alert">
+        <p className="text-sm text-destructive" role="alert">
           {error}
         </p>
       ) : null}

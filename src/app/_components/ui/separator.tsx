@@ -8,7 +8,7 @@ export function Separator({ className, ...props }: SeparatorProps) {
   return (
     <div
       aria-hidden="true"
-      className={cn("h-px bg-white/10", className)}
+      className={cn("h-px bg-border", className)}
       {...props}
     />
   );
