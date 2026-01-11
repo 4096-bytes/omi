@@ -6,6 +6,7 @@ import { db } from "~/server/db";
 import { sendVerifyEmail } from "~/server/email";
 
 export const auth = betterAuth({
+  baseURL: env.BETTER_AUTH_URL,
   database: drizzleAdapter(db, {
     provider: "pg", // or "pg" or "mysql"
   }),
@@ -32,7 +33,6 @@ export const auth = betterAuth({
     google: {
       clientId: env.BETTER_AUTH_GOOGLE_CLIENT_ID,
       clientSecret: env.BETTER_AUTH_GOOGLE_CLIENT_SECRET,
-      redirectURI: "http://localhost:3000/api/auth/callback/google",
       mapProfileToUser: async (profile) => {
         const email = typeof profile.email === "string" ? profile.email : null;
         const name = typeof profile.name === "string" ? profile.name.trim() : "";

@@ -38,7 +38,8 @@ OMI AI is a **conversation-to-production** workspace for interior designers. It 
 ## Getting Started (Local Dev)
 
 1) Prepare environment variables: copy `.env.example` to `.env` and fill required values (keep `src/env.js` in sync).
-   - Google OAuth (local): configure redirect URI `http://localhost:3000/api/auth/callback/google` and origin `http://localhost:3000` in the Google Console.
+   - Set `BETTER_AUTH_URL` (e.g. `http://localhost:3000` locally; use your deployed origin in production).
+   - Google OAuth: configure redirect URI `${BETTER_AUTH_URL}/api/auth/callback/google` and origin `${BETTER_AUTH_URL}` in the Google Console.
    - Resend (verification email): set `RESEND_API_KEY`; default sender is `RESEND_FROM_EMAIL=onboarding@resend.dev`.
 2) Start the local database (requires Docker or Podman):
    - `./start-database.sh`
