@@ -69,6 +69,10 @@ Vitest (unit tests) and Playwright (end-to-end) are configured; the minimum CI g
 
 When covering real user journeys (especially auth, forms, routing/navigation, and other UI interactions), tests SHALL prefer end-to-end automation based on Chrome DevTools Protocol (recommended: Playwright + Chromium) and build cases around real scenarios (any new scripts and conventions should be documented in OpenSpec).
 
+Mandatory requirements (project defaults):
+- If a UI/user-flow change can be reasonably covered by Playwright, the change SHALL add or update E2E coverage. If it is not feasible, the corresponding OpenSpec `proposal.md` MUST document why and provide alternative verification steps.
+- If a change adds or modifies non-trivial server/service logic under `src/server/**` (beyond pure glue code or type-only changes), the change SHALL add or update Vitest unit tests. If unit tests are unnecessary, the corresponding OpenSpec `proposal.md` MUST document why.
+
 Conventions:
 - For backend/service logic, use Vitest and keep tests close to code (e.g. `src/server/**/*.test.ts`), run via `npm run test:unit`.
 - Keep E2E tests under `e2e/`, run via `npm run test:e2e`. First run may require `npx playwright install` to install browsers.

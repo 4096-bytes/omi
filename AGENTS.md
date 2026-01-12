@@ -47,7 +47,8 @@ Keep this managed block so 'openspec update' can refresh the instructions.
 ## Testing Guidelines
 - Treat `npm run check` as the minimum CI gate.
 - For backend service logic, use Vitest and keep unit tests near code (e.g., `src/server/**/*.test.ts`), run via `npm run test:unit`.
-- For UI flows, prefer end-to-end automation driven by Chrome DevTools Protocol (recommended: Playwright + Chromium) and cover real user journeys.
+- For UI flows, use end-to-end automation driven by Chrome DevTools Protocol (recommended: Playwright + Chromium) to cover real user journeys. If a UI/user-flow change can be reasonably covered by E2E, you MUST add/update Playwright tests (or document why it is not feasible).
+- For server/service logic, if you add or change non-trivial logic, you MUST add/update Vitest unit tests (or document why tests are unnecessary).
 - Keep E2E tests under `e2e/` and run via `npm run test:e2e` (first-time setup may require `npx playwright install`).
 
 ## Commit & Pull Request Guidelines
