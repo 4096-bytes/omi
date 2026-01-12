@@ -1,8 +1,7 @@
-# marketing Specification
+# Marketing
 
-## Purpose
-TBD - created by archiving change add-marketing-header-auth. Update Purpose after archive.
-## Requirements
+## MODIFIED Requirements
+
 ### Requirement: 营销首页 Header（Auth 入口）
 系统 SHALL 在营销首页（`/`）根据用户登录状态提供清晰可见的入口：
 
@@ -32,12 +31,4 @@ TBD - created by archiving change add-marketing-header-auth. Update Purpose afte
 - **THEN** 系统销毁会话并使用户处于未登录态
 - **AND THEN** 系统将用户导航到 `/`
 - **AND THEN** Header 显示未登录态入口（`Sign in` 与 `Try Free`）
-
-### Requirement: 营销首页不包含脚手架 Demo 内容
-系统 SHALL 确保 `/` 不展示任何脚手架示例内容（例如 “Create T3 App”、tRPC 示例文案、以及 demo 外链），以避免用户误解与品牌噪声。
-
-#### Scenario: 用户访问 `/` 时不应看到脚手架示例
-- **GIVEN** 用户访问 `/`
-- **WHEN** 页面完成渲染
-- **THEN** 页面不应包含 “Create T3 App” 等脚手架示例文案或相关 demo 外链
 
