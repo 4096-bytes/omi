@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { getSession } from "~/server/better-auth/server";
+import { MarketingUserMenu } from "./_components/marketing-user-menu";
 
 function linkButtonBase() {
   return "inline-flex items-center justify-center rounded-md text-sm font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring";
@@ -21,12 +22,19 @@ export default async function MarketingLayout({
 
           <nav className="flex items-center gap-2">
             {session ? (
-              <Link
-                className={`${linkButtonBase()} bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-2 shadow-sm`}
-                href="/workspace"
-              >
-                Go to workspace
-              </Link>
+              <>
+                <Link
+                  className={`${linkButtonBase()} bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-2 shadow-sm`}
+                  href="/workspace"
+                >
+                  Go to workspace
+                </Link>
+                <MarketingUserMenu
+                  displayName={
+                    session.user.name?.trim() ? session.user.name : session.user.email
+                  }
+                />
+              </>
             ) : (
               <>
                 <Link

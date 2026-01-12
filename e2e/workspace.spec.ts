@@ -57,6 +57,7 @@ test.describe("workspace", () => {
   test("verified email can login and land on /workspace", async ({ page }) => {
     const email = `e2e+${Date.now()}@example.com`;
     const password = "Password123!";
+    const expectedName = email.split("@")[0]!;
 
     await page.goto("/register");
     await page.getByLabel("Email").fill(email);
@@ -81,6 +82,17 @@ test.describe("workspace", () => {
     await expect(
       header.getByRole("link", { name: "Go to workspace" }),
     ).toBeVisible();
+    await expect(header.getByText(expectedName)).toBeVisible();
+    await expect(header.getByLabel("User menu")).toBeVisible();
     await expect(header.getByRole("link", { name: "Try Free" })).toHaveCount(0);
+
+    await header.getByLabel("User menu").click();
+    await expect(header.getByRole("button", { name: "Sign out" })).toBeVisible();
+    await header.getByRole("button", { name: "Sign out" }).click();
+    await expect(header.getByRole("link", { name: "Sign in" })).toBeVisible();
+    await expect(header.getByRole("link", { name: "Try Free" })).toBeVisible();
+    await expect(
+      header.getByRole("link", { name: "Go to workspace" }),
+    ).toHaveCount(0);
   });
 });
