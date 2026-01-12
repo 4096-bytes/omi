@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "~/app/_components/ui/button";
@@ -9,6 +10,7 @@ import { Label } from "~/app/_components/ui/label";
 import { authClient } from "~/server/better-auth/client";
 
 export function EmailSignInForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -26,7 +28,7 @@ export function EmailSignInForm() {
           const res = await authClient.signIn.email({
             email,
             password,
-            callbackURL: "/",
+            callbackURL: "/workspace",
           });
 
           if (res.error) {
@@ -34,6 +36,9 @@ export function EmailSignInForm() {
             setIsPending(false);
             return;
           }
+
+          router.push("/workspace");
+          router.refresh();
         } catch {
           setError("Sign in failed. Please try again.");
           setIsPending(false);
@@ -66,23 +71,19 @@ export function EmailSignInForm() {
         />
       </div>
 
-      <Button
-        className="w-full"
-        disabled={isPending}
-        type="submit"
-      >
+      <Button className="w-full" disabled={isPending} type="submit">
         {isPending ? "Signing in..." : "Sign in with email"}
       </Button>
 
       {error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-destructive text-sm" role="alert">
           {error}
         </p>
       ) : (
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-center text-sm">
           Don’t have an account?{" "}
           <Link
-            className="text-primary underline underline-offset-4 hover:text-primary/90"
+            className="text-primary hover:text-primary/90 underline underline-offset-4"
             href="/register"
           >
             Create one

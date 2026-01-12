@@ -17,11 +17,11 @@ import { GoogleSignInButton } from "./_components/google-sign-in-button";
 export default async function LoginPage() {
   const session = await getSession();
   if (session) {
-    redirect("/");
+    redirect("/workspace");
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-background px-4 py-16 text-foreground [background-image:radial-gradient(120%_80%_at_50%_0%,rgba(212,175,55,0.12)_0%,rgba(11,11,12,0)_60%)]">
+    <main className="bg-background text-foreground flex min-h-screen items-center justify-center [background-image:radial-gradient(120%_80%_at_50%_0%,rgba(212,175,55,0.12)_0%,rgba(11,11,12,0)_60%)] px-4 py-16">
       <div className="w-full max-w-md">
         <Card>
           <CardHeader>
@@ -36,7 +36,7 @@ export default async function LoginPage() {
 
             <div className="flex items-center gap-4">
               <Separator className="flex-1" />
-              <span className="text-xs text-muted-foreground">or</span>
+              <span className="text-muted-foreground text-xs">or</span>
               <Separator className="flex-1" />
             </div>
 
@@ -44,7 +44,7 @@ export default async function LoginPage() {
 
             <div className="text-center">
               <Link
-                className="text-sm text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                className="text-muted-foreground hover:text-foreground text-sm underline underline-offset-4"
                 href="/"
               >
                 Back to home

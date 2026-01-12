@@ -50,7 +50,7 @@ export function GoogleSignInButton() {
           try {
             const res = await authClient.signIn.social({
               provider: "google",
-              callbackURL: "/",
+              callbackURL: "/workspace",
             });
 
             if (res.error) {
@@ -68,7 +68,7 @@ export function GoogleSignInButton() {
       </Button>
 
       {error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-destructive text-sm" role="alert">
           {error}
         </p>
       ) : null}

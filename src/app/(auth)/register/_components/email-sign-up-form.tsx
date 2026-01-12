@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "~/app/_components/ui/button";
@@ -13,6 +14,7 @@ function generateNameFromEmail(email: string) {
 }
 
 export function EmailSignUpForm() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isPending, setIsPending] = useState(false);
@@ -31,7 +33,7 @@ export function EmailSignUpForm() {
             name: generateNameFromEmail(email),
             email,
             password,
-            callbackURL: "/",
+            callbackURL: "/workspace",
           });
 
           if (res.error) {
@@ -44,7 +46,8 @@ export function EmailSignUpForm() {
             notice: "verify-email-sent",
             email,
           });
-          window.location.href = `/?${params.toString()}`;
+          router.replace(`/register?${params.toString()}`);
+          router.refresh();
         } catch {
           setError("Sign up failed. Please try again.");
           setIsPending(false);
@@ -76,19 +79,15 @@ export function EmailSignUpForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <p className="text-xs text-muted-foreground">Minimum 8 characters.</p>
+        <p className="text-muted-foreground text-xs">Minimum 8 characters.</p>
       </div>
 
-      <Button
-        className="w-full"
-        disabled={isPending}
-        type="submit"
-      >
+      <Button className="w-full" disabled={isPending} type="submit">
         {isPending ? "Creating account..." : "Create account"}
       </Button>
 
       {error ? (
-        <p className="text-sm text-destructive" role="alert">
+        <p className="text-destructive text-sm" role="alert">
           {error}
         </p>
       ) : null}
